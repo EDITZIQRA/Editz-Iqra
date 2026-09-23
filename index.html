@@ -2015,4 +2015,120 @@
     </script>
 </body>
 </html>
-```
+
+                <div class="flex items-center justify-between pt-2">
+                    <div>
+                        <span class="text-2xl font-black text-yellow-400">৳${course.price}</span>
+                        <span class="text-xs text-gray-500 line-through ml-2">৳${course.oldPrice || course.price * 2}</span>
+                    </div>
+                    ${isEnrolled ? 
+                        `<button onclick="closeCourseModal(); switchTab('my-learning')" class="bg-green-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs">মাই লাইব্রেরি খুলুন</button>` :
+                        `<button onclick="closeCourseModal(); addToCart('course', ${course.id})" class="bg-accentYellow hover:bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-xl text-xs transition">কার্টে যোগ করুন</button>`
+                    }
+                </div>
+            `;
+            document.getElementById('courseModal').classList.remove('hidden');
+        }
+
+        function closeCourseModal() {
+            document.getElementById('courseModal').classList.add('hidden');
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            
+            const selectedTab = document.getElementById(`tab-${tabId}`);
+            if(selectedTab) selectedTab.classList.remove('hidden');
+
+            // Bottom Nav Active Highlight
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn flex flex-col items-center gap-1 hover:text-white transition text-gray-400";
+            });
+            const activeNav = document.getElementById(`nav-btn-${tabId}`);
+            if(activeNav) activeNav.className = "nav-btn active flex flex-col items-center gap-1 text-yellow-400 font-medium";
+
+            if(tabId === 'my-learning') renderMyLearning();
+            if(tabId === 'orders') renderAdminOrders();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Login System
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('loginName').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
+
+            state.user = { name, phone };
+            localStorage.setItem('eiUser', JSON.stringify(state.user));
+            
+            document.getElementById('userNameBtn').innerText = name;
+            closeLoginModal();
+            showToast(`স্বাগতম, ${name}!`, 'success');
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600';
+            
+            toast.className = `${bgClass} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 border border-white/10 transition duration-300 transform translate-x-5 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-5', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-5');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Countdown Timer Script
+        function startTimer() {
+            let h = 5, m = 42, s = 18;
+            setInterval(() => {
+                s--;
+                if(s < 0) { s = 59; m--; }
+                if(m < 0) { m = 59; h--; }
+                if(h < 0) { h = 24; }
+
+                document.getElementById('timerHours').innerText = h < 10 ? '0' + h : h;
+                document.getElementById('timerMinutes').innerText = m < 10 ? '0' + m : m;
+                document.getElementById('timerSeconds').innerText = s < 10 ? '0' + s : s;
+            }, 1000);
+        }
+
+        // Application Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHomeCourses();
+            renderAllCourses();
+            renderHomeStore();
+            renderAllStore();
+            renderReviews();
+            updateStatsDisplay();
+            updateCartUI();
+            updateAdminUI();
+            startTimer();
+
+            if(state.user) {
+                document.getElementById('userNameBtn').innerText = state.user.name;
+            }
+        });
+    </script>
+</body>
+</html>
+
+`
+
