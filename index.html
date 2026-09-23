@@ -1,0 +1,2018 @@
+```html
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editz Iqra - প্রিমিয়াম লার্নিং ও ডিজিটাল স্টোর</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        cardBg: '#111827',
+                        cardBorder: '#1f293d',
+                        accentYellow: '#facc15',
+                        brandBlue: '#2563eb',
+                        brandGreen: '#10b981',
+                        brandRed: '#ef4444'
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #090d16;
+            color: #f3f4f6;
+            user-select: none;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        /* Glowing effects */
+        .glow-yellow {
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.25);
+        }
+        .glow-blue {
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+        }
+        .glow-red {
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+        /* Admin Editable Outline */
+        .admin-editable-active {
+            outline: 2px dashed #facc15 !important;
+            outline-offset: 4px;
+            cursor: text !important;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 min-h-screen pb-24 sm:pb-8 flex flex-col antialiased selection:bg-yellow-400 selection:text-black">
+
+    <!-- Top Bar Header -->
+    <header class="sticky top-0 z-40 w-full bg-darkBg/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-blue-500/30">
+                    E
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold tracking-tight leading-none">Editz <span class="text-blue-500">Iqra</span></span>
+                    <span class="text-[10px] text-yellow-400 font-semibold tracking-widest uppercase">একাডেমি ও স্টোর</span>
+                </div>
+            </div>
+
+            <!-- Search Bar (Desktop / Tablet) -->
+            <div class="hidden sm:flex items-center flex-1 max-w-xs relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 text-gray-400 text-xs"></i>
+                <input type="text" id="searchInput" onkeyup="handleSearch(this.value)" placeholder="কোর্স বা ডিজিটাল ফাইল খুঁজুন..." class="w-full bg-cardBg border border-gray-800 text-xs text-white pl-9 pr-3 py-2 rounded-xl focus:outline-none focus:border-blue-500 transition">
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Admin Mode Toggle Button -->
+                <button onclick="toggleAdminPrompt()" id="adminToggleBtn" class="bg-purple-900/40 border border-purple-500/50 hover:bg-purple-800/60 text-purple-300 text-xs px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-shield text-xs"></i>
+                    <span id="adminBtnText">এডমিন প্যানেল</span>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="openCartModal()" class="relative bg-cardBg border border-gray-800 hover:border-gray-700 p-2.5 rounded-xl text-gray-300 hover:text-white transition">
+                    <i class="fa-solid fa-cart-shopping text-sm"></i>
+                    <span id="cartBadge" class="hidden absolute -top-1.5 -right-1.5 bg-yellow-400 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-darkBg">0</span>
+                </button>
+
+                <!-- User Profile / Login Button -->
+                <div id="userHeaderArea">
+                    <button onclick="openLoginModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-4 py-2 rounded-xl font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-600/20">
+                        <i class="fa-solid fa-user text-xs"></i>
+                        <span id="userNameBtn">লগইন</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Status Banner -->
+    <div id="adminModeBanner" class="hidden bg-purple-900/80 border-b border-purple-500 text-purple-100 text-xs py-2 px-4 text-center font-semibold flex flex-wrap items-center justify-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-yellow-400 animate-bounce"></i>
+        <span>এডমিন মুড সক্রিয় আছে! ছবি, টেক্সট বা প্রোডাক্ট সরাসরি ডিলিট (🗑️) ও এডিট (✏️) করুন।</span>
+        <button onclick="openAdminOrdersModal()" class="bg-yellow-400 text-black font-bold px-3 py-1 rounded-lg text-[11px] ml-2 hover:bg-yellow-300 shadow">
+            <i class="fa-solid fa-list-check mr-1"></i>অর্ডারসমূহ দেখুন
+        </button>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto w-full px-4 pt-4 flex-1 space-y-8">
+
+        <!-- Announcement Ribbon / Flash Sale Banner -->
+        <div class="bg-gradient-to-r from-red-900/40 via-yellow-900/30 to-blue-900/40 border border-yellow-500/30 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 text-xs shadow-xl">
+            <div class="flex items-center gap-2">
+                <span class="bg-red-500 text-white font-bold px-2 py-0.5 rounded text-[11px] animate-pulse">মেগা সেল</span>
+                <span class="text-gray-200">সব কোর্সে ৫০% পর্যন্ত ছাড়! প্রমো কোড: <strong class="text-yellow-400 font-mono">PRO50</strong></span>
+            </div>
+            <!-- Countdown Timer -->
+            <div class="flex items-center gap-1.5 font-mono text-yellow-400 bg-black/40 px-3 py-1 rounded-lg border border-yellow-500/20">
+                <i class="fa-regular fa-clock text-xs text-yellow-500"></i>
+                <span id="timerHours">05</span>:
+                <span id="timerMinutes">42</span>:
+                <span id="timerSeconds">18</span>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: HOME VIEW -->
+        <div id="tab-home" class="tab-content space-y-8">
+
+            <!-- Hero Section -->
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-7 space-y-4 text-center md:text-left relative">
+                    
+                    <!-- Quick Admin Controls for Hero Text -->
+                    <div id="heroAdminBtn" class="hidden mb-2">
+                        <button onclick="openHeroEditModal()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                            <i class="fa-solid fa-pen-to-square"></i> হিরো সেকশনের টেক্সট এডিট করুন
+                        </button>
+                    </div>
+
+                    <div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs px-3 py-1 rounded-full font-semibold">
+                        <span id="heroBadge" onblur="saveEditableText('heroBadge', this.innerText)">🚀 স্কিল বাড়িয়ে আয় শুরু করুন</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold leading-tight tracking-tight text-white">
+                        <span id="heroTitle" onblur="saveEditableText('heroTitle', this.innerText)">বাংলাদেশের প্রিমিয়াম লার্নিং প্ল্যাটফর্ম</span>
+                    </h1>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
+                        <span id="heroSubtitle" onblur="saveEditableText('heroSubtitle', this.innerText)">ওয়েব ডেভেলপমেন্ট, ভিডিও এডিটিং ও ডিজিটাল রিসোর্সের সবচেয়ে সমৃদ্ধ সমাহার। প্র্যাকটিকাল প্রজেক্ট শিখে নিজের ক্রিয়েটর জার্নি শুরু করুন।</span>
+                    </p>
+
+                    <!-- Feature Badges -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 text-xs">
+                        <div class="bg-cardBg border border-gray-800 p-2.5 rounded-xl flex items-center gap-2 text-gray-300">
+                            <span class="text-yellow-400 text-base">⚡</span>
+                            <span>প্রজেক্ট বেসড লার্নিং</span>
+                        </div>
+                        <div class="bg-cardBg border border-gray-800 p-2.5 rounded-xl flex items-center gap-2 text-gray-300">
+                            <span class="text-blue-400 text-base">♾️</span>
+                            <span>লাইফটাইম এক্সেস</span>
+                        </div>
+                        <div class="bg-cardBg border border-gray-800 p-2.5 rounded-xl flex items-center gap-2 text-gray-300 col-span-2 sm:col-span-1">
+                            <span class="text-green-400 text-base">🤝</span>
+                            <span>২৪/৭ ডেডিকেটেড সাপোর্ট</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Feature Banner Card (Supports Admin Edit / Delete / Replace) -->
+                <div class="md:col-span-5" id="heroBannerCardContainer">
+                    <div class="relative bg-gradient-to-b from-gray-800 to-cardBg border border-gray-700/70 rounded-2xl p-4 shadow-2xl space-y-3 group">
+                        
+                        <!-- Admin Control Overlay for Hero Banner -->
+                        <div id="heroBannerAdminControls" class="hidden absolute top-2 right-2 z-30 flex items-center gap-1.5 bg-black/85 p-1.5 rounded-xl border border-gray-700 backdrop-blur shadow-xl">
+                            <button onclick="openHeroBannerEditModal()" class="bg-yellow-400 hover:bg-yellow-300 text-black text-[11px] font-extrabold px-2.5 py-1 rounded-lg transition flex items-center gap-1">
+                                <i class="fa-solid fa-pen"></i> ব্যানার এডিট
+                            </button>
+                            <button onclick="toggleHideHeroBanner()" class="bg-red-600 hover:bg-red-500 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-lg transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> মুছে ফেলুন
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <span id="heroOfferBadge" class="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-md tracking-wider">🔥 ধামাকা অফার</span>
+                            <span id="heroOfferStudents" class="text-xs text-gray-400"><i class="fa-solid fa-users text-blue-400 mr-1"></i>১,৪৫০+ স্টুডেন্ট</span>
+                        </div>
+                        
+                        <div class="relative rounded-xl overflow-hidden aspect-video bg-gray-900 border border-gray-800 group">
+                            <img id="heroBannerImg" src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="Hero Banner" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
+                                <span id="heroBannerTitleText" class="text-xs font-semibold text-white">মেগা কম্বো: ফুলস্ট্যাক ডেভেলপমেন্ট + অ্যাডভান্সড এডিটিং</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <div>
+                                <span id="heroBannerPrice" class="text-2xl font-bold text-yellow-400">৳১৫০০</span>
+                                <span id="heroBannerOldPrice" class="text-xs text-gray-500 line-through ml-1.5">৳৪০০০</span>
+                            </div>
+                            <span id="heroBannerDiscount" class="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-2.5 py-1 rounded-lg">৬২% ছাড়</span>
+                        </div>
+
+                        <button onclick="openCourseModal(1)" class="w-full bg-accentYellow hover:bg-yellow-400 text-black font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-yellow-500/20">
+                            <span>এখনই এনরোল করুন</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Courses Section -->
+            <section class="space-y-4">
+                <div class="flex justify-between items-end border-b border-gray-800 pb-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span>🔥 সেরা মাস্টারক্লাস কোর্সসমূহ</span>
+                        </h2>
+                        <p class="text-xs text-gray-400">সবচেয়ে জনপ্রিয় ও প্র্যাকটিকাল কোর্সসমূহ</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="addCourseBtn" onclick="openAddCourseModal()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-md">
+                            <i class="fa-solid fa-plus text-xs"></i> নতুন কোর্স যোগ করুন
+                        </button>
+                        <button onclick="switchTab('courses')" class="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                            <span>সব কোর্স</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Courses Grid -->
+                <div id="homeCoursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dynamic cards injected here -->
+                </div>
+            </section>
+
+            <!-- Digital Store Showcase -->
+            <section class="space-y-4">
+                <div class="flex justify-between items-end border-b border-gray-800 pb-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span>⚡ ডিজিটাল স্টোর রিসোর্স</span>
+                        </h2>
+                        <p class="text-xs text-gray-400">এডিটিং প্যাক, ফন্ট, প্রিসেট ও টেমপ্লেট</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="addStoreBtn" onclick="openAddStoreModal()" class="hidden bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-md">
+                            <i class="fa-solid fa-plus text-xs"></i> নতুন এসেট যোগ করুন
+                        </button>
+                        <button onclick="switchTab('store')" class="text-xs font-semibold text-yellow-400 hover:text-yellow-300 flex items-center gap-1">
+                            <span>স্টোর দেখুন</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Store Grid -->
+                <div id="homeStoreGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
+                    <!-- Dynamic store cards injected here -->
+                </div>
+            </section>
+
+            <!-- Trust & Testimonials -->
+            <section class="bg-cardBg border border-gray-800 rounded-2xl p-6 space-y-6">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center divide-x divide-gray-800/80">
+                    <div>
+                        <div id="totalStudentsStat" class="text-2xl font-black text-yellow-400">০</div>
+                        <div class="text-xs text-gray-400">সন্তুষ্ট শিক্ষার্থী</div>
+                    </div>
+                    <div>
+                        <div id="totalCoursesStat" class="text-2xl font-black text-blue-400">০</div>
+                        <div class="text-xs text-gray-400">প্রিমিয়াম কোর্স</div>
+                    </div>
+                    <div>
+                        <div id="totalStoreStat" class="text-2xl font-black text-green-400">০</div>
+                        <div class="text-xs text-gray-400">ডিজিটাল এসেট</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-black text-purple-400">৪.৯ ★</div>
+                        <div class="text-xs text-gray-400">গড় রেটিং</div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Student Reviews Section -->
+                <div class="border-t border-gray-800/80 pt-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-comments text-yellow-400"></i>
+                                <span>শিক্ষার্থীদের মতামত ও রিভিউ</span>
+                            </h3>
+                            <p class="text-xs text-gray-400">আমাদের শিক্ষার্থীদের বাস্তব অভিজ্ঞতা</p>
+                        </div>
+                        <button id="addReviewBtn" onclick="openAddReviewModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-md">
+                            <i class="fa-solid fa-plus text-xs"></i> রিভিউ যোগ করুন
+                        </button>
+                    </div>
+
+                    <div id="reviewsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Student Reviews Injected via JS -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB CONTENT: COURSES VIEW -->
+        <div id="tab-courses" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">সমস্ত কোর্সসমূহ</h1>
+                    <p class="text-xs text-gray-400">আপনার প্রয়োজনীয় ক্যাটাগরি অনুযায়ী কোর্স বেছে নিন</p>
+                </div>
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                    <button onclick="filterCourses('all')" class="course-filter-btn active bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">সব কোর্স</button>
+                    <button onclick="filterCourses('dev')" class="course-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">ওয়েব দেভ</button>
+                    <button onclick="filterCourses('editing')" class="course-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">ভিডিও এডিটিং</button>
+                    <button onclick="filterCourses('design')" class="course-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">গ্রাফিক্স</button>
+                </div>
+            </div>
+
+            <!-- Full Courses List Grid -->
+            <div id="allCoursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Courses injected via JS -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: DIGITAL STORE VIEW -->
+        <div id="tab-store" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">ডিজিটাল এসেট স্টোর</h1>
+                    <p class="text-xs text-gray-400">প্রিমিয়াম ফন্ট, ভিডিও টেমপ্লেট, লোটাস প্রিসেট ও LUTs</p>
+                </div>
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                    <button onclick="filterStore('all')" class="store-filter-btn active bg-yellow-400 text-black text-xs px-3 py-1.5 rounded-lg font-bold whitespace-nowrap">সব এসেট</button>
+                    <button onclick="filterStore('fonts')" class="store-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">ফন্ট প্যাক</button>
+                    <button onclick="filterStore('editing')" class="store-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">ভিডিও এসেট</button>
+                    <button onclick="filterStore('graphics')" class="store-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">গ্রাফিক্স/PSD</button>
+                </div>
+            </div>
+
+            <!-- Full Store Items Grid -->
+            <div id="allStoreGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Digital Assets injected via JS -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: MY LEARNING / ENROLLED VIEW -->
+        <div id="tab-my-learning" class="tab-content hidden space-y-6">
+            <div class="border-b border-gray-800 pb-4">
+                <h1 class="text-2xl font-bold text-white">মাই লাইব্রেরি</h1>
+                <p class="text-xs text-gray-400">আপনার ক্রয়কৃত কোর্স ও ডিজিটাল প্রোডাক্ট সমূহ</p>
+            </div>
+
+            <div class="space-y-4">
+                <h2 class="text-sm font-bold text-yellow-400 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>আমার কোর্সসমূহ</span>
+                </h2>
+                <div id="enrolledCoursesList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Enrolled courses rendered dynamically -->
+                </div>
+
+                <h2 class="text-sm font-bold text-blue-400 flex items-center gap-2 pt-4">
+                    <i class="fa-solid fa-download"></i>
+                    <span>ডাউনলোডযোগ্য ডিজিটাল এসেট</span>
+                </h2>
+                <div id="purchasedStoreList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- Purchased store assets rendered dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: ADMIN ORDERS DASHBOARD -->
+        <div id="tab-orders" class="tab-content hidden space-y-6">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchTab('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 border border-gray-700">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>পিছনে যান</span>
+                    </button>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-box-archive text-purple-400"></i>
+                            <span>কাস্টমার অর্ডার ড্যাশবোর্ড (এডমিন)</span>
+                        </h1>
+                        <p class="text-xs text-gray-400">প্রাপ্ত সমস্ত অর্ডার ও পেমেন্ট ট্রানজেকশন তালিকা</p>
+                    </div>
+                </div>
+                <button onclick="clearAllOrders()" class="bg-red-950/60 border border-red-700/60 hover:bg-red-900/80 text-red-300 text-xs px-3 py-1.5 rounded-xl font-semibold transition">
+                    সমস্ত অর্ডার রিমুভ করুন
+                </button>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="bg-cardBg border border-gray-800 p-4 rounded-xl text-center">
+                    <div class="text-xs text-gray-400">মোট অর্ডার</div>
+                    <div id="adminTotalOrders" class="text-2xl font-black text-yellow-400">০</div>
+                </div>
+                <div class="bg-cardBg border border-gray-800 p-4 rounded-xl text-center">
+                    <div class="text-xs text-gray-400">মোট বিক্রয় আর্নিং</div>
+                    <div id="adminTotalRevenue" class="text-2xl font-black text-green-400">৳০</div>
+                </div>
+                <div class="bg-cardBg border border-gray-800 p-4 rounded-xl text-center col-span-2 sm:col-span-1">
+                    <div class="text-xs text-gray-400">পেন্ডিং যাচাইকরণ</div>
+                    <div id="adminPendingOrders" class="text-2xl font-black text-blue-400">০</div>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div class="space-y-3">
+                <h3 class="text-sm font-bold text-gray-300">অর্ডারের তালিকা:</h3>
+                <div id="adminOrdersContainer" class="space-y-3">
+                    <!-- Orders dynamically rendered here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Mobile Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-darkBg/95 border-t border-gray-800/90 py-2.5 px-4 backdrop-blur-lg z-40 sm:hidden">
+        <div class="max-w-md mx-auto flex justify-around items-center text-[11px] text-gray-400">
+            <button onclick="switchTab('home')" id="nav-btn-home" class="nav-btn active flex flex-col items-center gap-1 text-yellow-400 font-medium">
+                <i class="fa-solid fa-house text-base"></i>
+                <span>হোম</span>
+            </button>
+            <button onclick="switchTab('courses')" id="nav-btn-courses" class="nav-btn flex flex-col items-center gap-1 hover:text-white transition">
+                <i class="fa-solid fa-book-open text-base"></i>
+                <span>কোর্স</span>
+            </button>
+            <button onclick="switchTab('store')" id="nav-btn-store" class="nav-btn flex flex-col items-center gap-1 hover:text-white transition">
+                <i class="fa-solid fa-bag-shopping text-base"></i>
+                <span>স্টোর</span>
+            </button>
+            <button onclick="switchTab('my-learning')" id="nav-btn-my-learning" class="nav-btn flex flex-col items-center gap-1 hover:text-white transition relative">
+                <i class="fa-solid fa-circle-play text-base"></i>
+                <span>মাই লার্নিং</span>
+                <span id="libraryBadge" class="hidden absolute top-0 right-2 w-2 h-2 bg-green-500 rounded-full"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL 1: Course Details Modal -->
+    <div id="courseModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-5 my-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCourseModal()" class="absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center text-sm transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="courseModalBody" class="space-y-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Cart & Checkout Modal -->
+    <div id="cartModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-t-2xl sm:rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-yellow-400"></i>
+                    <span>আপনার শপিং কার্ট</span>
+                </h3>
+                <button onclick="closeCartModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cartItemsContainer" class="space-y-3 min-h-[120px]">
+                <!-- Cart items injected here -->
+            </div>
+
+            <!-- Coupon Input -->
+            <div class="flex gap-2 pt-2">
+                <input type="text" id="couponInput" placeholder="প্রমো কোড (যেমন: PRO50)" class="flex-1 bg-darkBg border border-gray-800 text-xs px-3 py-2 rounded-xl text-white uppercase font-mono focus:outline-none focus:border-yellow-400">
+                <button onclick="applyCoupon()" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 text-xs px-4 py-2 rounded-xl font-bold border border-gray-700 transition">অ্যাপ্লাই</button>
+            </div>
+            <div id="couponMessage" class="text-[11px] hidden"></div>
+
+            <!-- Total Calculation -->
+            <div class="border-t border-gray-800 pt-3 space-y-1.5 text-xs">
+                <div class="flex justify-between text-gray-400">
+                    <span>সাবটোটাল</span>
+                    <span id="cartSubtotal">৳০</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>ডিসকাউন্ট</span>
+                    <span id="cartDiscount" class="text-green-400">-৳০</span>
+                </div>
+                <div class="flex justify-between text-base font-bold text-white pt-1 border-t border-gray-800/60">
+                    <span>সর্বমোট মূল্য</span>
+                    <span id="cartTotal" class="text-yellow-400">৳০</span>
+                </div>
+            </div>
+
+            <!-- Checkout Action -->
+            <button onclick="startCheckout()" id="checkoutBtn" class="w-full bg-accentYellow hover:bg-yellow-400 text-black font-bold py-3 rounded-xl transition shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2">
+                <span>পেমেন্ট করুন</span>
+                <i class="fa-solid fa-credit-card text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Payment Gateway Simulation -->
+    <div id="paymentModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl max-w-md w-full p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-white">পেমেন্ট গেটওয়ে (bKash / Nagad / Card)</h3>
+                <button onclick="closePaymentModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Payment Methods Selector -->
+            <div class="space-y-2">
+                <label class="text-xs text-gray-400">পেমেন্ট মেথড সিলেক্ট করুন:</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="selectPayMethod('bkash')" id="pay-bkash" class="pay-method-btn bg-pink-900/30 border-2 border-pink-500 text-pink-300 font-bold p-2.5 rounded-xl text-xs text-center">
+                        bKash
+                    </button>
+                    <button type="button" onclick="selectPayMethod('nagad')" id="pay-nagad" class="pay-method-btn bg-darkBg border border-gray-800 text-gray-400 hover:text-white font-bold p-2.5 rounded-xl text-xs text-center">
+                        Nagad
+                    </button>
+                    <button type="button" onclick="selectPayMethod('card')" id="pay-card" class="pay-method-btn bg-darkBg border border-gray-800 text-gray-400 hover:text-white font-bold p-2.5 rounded-xl text-xs text-center">
+                        Card / Banking
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-darkBg/80 p-3 rounded-xl border border-gray-800 text-xs space-y-1 text-gray-300">
+                <p>১. মার্চেন্ট নম্বর: <strong class="text-yellow-400 font-mono">01700-000000</strong> (Send Money / Payment)</p>
+                <p>২. নিচে টাকা পাঠানোর পর প্রাপ্ত Transaction ID লিখুন:</p>
+            </div>
+
+            <div class="space-y-2">
+                <input type="text" id="trxIdInput" placeholder="Transaction ID (e.g. 9J82K1L3)" class="w-full bg-darkBg border border-gray-800 text-xs text-white p-3 rounded-xl uppercase font-mono focus:outline-none focus:border-blue-500">
+            </div>
+
+            <button onclick="confirmPayment()" class="w-full bg-brandGreen hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-green-600/20 text-xs uppercase tracking-wider">
+                পেমেন্ট নিশ্চিত করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 4: User Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold text-white">অ্যাকাউন্টে লগইন করুন</h3>
+                <button onclick="closeLoginModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="text-xs text-gray-400 mb-1 block">আপনার নাম</label>
+                    <input type="text" id="loginName" required placeholder="আপনার পূর্ণ নাম" class="w-full bg-darkBg border border-gray-800 text-xs text-white p-2.5 rounded-xl focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 mb-1 block">মোবাইল / ইমেইল</label>
+                    <input type="text" id="loginPhone" required placeholder="017xxxxxxxx" class="w-full bg-darkBg border border-gray-800 text-xs text-white p-2.5 rounded-xl focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                    লগইন করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Add/Edit Item Modal (Admin) -->
+    <div id="itemEditModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl max-w-md w-full p-5 space-y-4 max-h-[90vh] overflow-y-auto my-8">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 id="itemEditTitle" class="text-base font-bold text-white">আইটেম যোগ / এডিট করুন</h3>
+                <button onclick="closeItemEditModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveItem(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="editItemType">
+                <input type="hidden" id="editItemId">
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">শিরোনাম / টাইটেল</label>
+                    <input type="text" id="editTitle" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-gray-400 mb-1 block">মূল্য (৳)</label>
+                        <input type="number" id="editPrice" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                    </div>
+                    <div id="oldPriceGroup">
+                        <label class="text-gray-400 mb-1 block">পূর্বের মূল্য (৳)</label>
+                        <input type="number" id="editOldPrice" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                    </div>
+                </div>
+
+                <div id="studentCountGroup">
+                    <label class="text-gray-400 mb-1 block">শিক্ষার্থী সংখ্যা (Students)</label>
+                    <input type="number" id="editStudents" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">ক্যাটাগরি</label>
+                    <select id="editCategory" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                        <option value="dev">ওয়েব ডেভেলপমেন্ট</option>
+                        <option value="editing">ভিডিও এডিটিং</option>
+                        <option value="design">গ্রাফিক্স ডিজাইন</option>
+                        <option value="graphics">গ্রাফিক্স / PSD</option>
+                        <option value="fonts">ফন্ট প্যাক</option>
+                    </select>
+                </div>
+
+                <div id="descriptionGroup">
+                    <label class="text-gray-400 mb-1 block">বিস্তারিত বিবরণ</label>
+                    <textarea id="editDescription" rows="3" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none"></textarea>
+                </div>
+
+                <!-- Custom Image Upload Section -->
+                <div class="space-y-2 border-t border-gray-800 pt-3">
+                    <label class="text-gray-300 font-bold block">ছবি যুক্ত করুন:</label>
+                    <div class="flex flex-col gap-2">
+                        <input type="file" id="editImageFile" accept="image/*" onchange="previewUploadedImage(this)" class="bg-darkBg border border-gray-800 text-gray-300 p-2 rounded-xl text-xs file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-yellow-400 file:text-black file:font-bold">
+                        <span class="text-[10px] text-gray-500 text-center">অথবা ছবির URL দিন:</span>
+                        <input type="text" id="editImageUrl" placeholder="https://..." class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                    </div>
+                    <!-- Image Preview Container -->
+                    <div id="imagePreviewBox" class="hidden relative aspect-video bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
+                        <img id="imagePreviewImg" src="" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-yellow-500/20">
+                    সেভ / আপডেট করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 6: Admin PIN Modal (Password Entrance) -->
+    <div id="adminPinModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-purple-800 rounded-2xl max-w-xs w-full p-5 space-y-4 text-center shadow-2xl">
+            <div class="w-12 h-12 bg-purple-900/50 border border-purple-500 rounded-2xl flex items-center justify-center mx-auto text-purple-300">
+                <i class="fa-solid fa-lock text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-white">এডমিন পিন নম্বর লিখুন</h3>
+                <p class="text-[11px] text-gray-400 mt-1">এডমিন এক্সেসের জন্য পাসওয়ার্ড লিখুন (পিন: <strong class="text-yellow-400 font-mono">0987</strong>)</p>
+            </div>
+            <input type="password" id="adminPinInput" placeholder="PIN" class="w-full bg-darkBg border border-purple-800 text-center text-xl text-white p-3 rounded-xl focus:outline-none focus:border-purple-400 font-mono tracking-widest">
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeAdminPinModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2.5 rounded-xl text-xs font-semibold">বাতিল</button>
+                <button onclick="verifyAdminPin()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-lg shadow-purple-600/30">প্রবেশ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 7: Student Review Add/Edit Modal (Admin) -->
+    <div id="reviewEditModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-cardBg border border-purple-800 rounded-2xl max-w-md w-full p-5 space-y-4 max-h-[90vh] overflow-y-auto my-8">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 id="reviewEditTitle" class="text-base font-bold text-white">শিক্ষার্থীর রিভিউ যোগ / এডিট</h3>
+                <button onclick="closeReviewEditModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveReview(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="editReviewId">
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">শিক্ষার্থীর নাম</label>
+                    <input type="text" id="editReviewName" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">কোর্স / ডেজিগনেশন (যেমন: ফুলস্ট্যাক লার্নার)</label>
+                    <input type="text" id="editReviewRole" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">মন্তব্য / মতামত</label>
+                    <textarea id="editReviewComment" rows="3" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-gray-400 mb-1 block">ছবি URL (ঐচ্ছিক)</label>
+                    <input type="text" id="editReviewAvatar" placeholder="https://..." class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-purple-600/30">
+                    সেভ করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 8: Hero Banner Edit Modal (Admin) -->
+    <div id="heroBannerEditModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-cardBg border border-yellow-500/50 rounded-2xl max-w-md w-full p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-yellow-400"></i>
+                    <span>হিরো অফার ব্যানার এডিট করুন</span>
+                </h3>
+                <button onclick="closeHeroBannerEditModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveHeroBanner(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-400 mb-1 block">ব্যানার টাইটেল / অফার নাম</label>
+                    <input type="text" id="editHeroBannerTitle" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-gray-400 mb-1 block">অফার প্রাইস (৳)</label>
+                        <input type="text" id="editHeroBannerPrice" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-gray-400 mb-1 block">পূর্বের মূল্য (৳)</label>
+                        <input type="text" id="editHeroBannerOldPrice" required class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-2 border-t border-gray-800 pt-3">
+                    <label class="text-gray-300 font-bold block">ব্যানার ছবি আপডেট করুন:</label>
+                    <input type="file" accept="image/*" onchange="previewHeroBannerImage(this)" class="bg-darkBg border border-gray-800 text-gray-300 p-2 rounded-xl text-xs w-full file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-yellow-400 file:text-black file:font-bold">
+                    <span class="text-[10px] text-gray-500 text-center block">অথবা ছবির URL দিন:</span>
+                    <input type="text" id="editHeroBannerUrl" placeholder="https://..." class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-yellow-400 focus:outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-yellow-500/20">
+                    ব্যানার আপডেট সেভ করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 9: Hero Text Settings Modal (Admin) -->
+    <div id="heroTextModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-cardBg border border-purple-500/50 rounded-2xl max-w-md w-full p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-heading text-purple-400"></i>
+                    <span>হিরো টেক্সট সংশোধন করুন</span>
+                </h3>
+                <button onclick="closeHeroEditModal()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSaveHeroTextModal(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-400 mb-1 block">টপ ব্যাজ টেক্সট</label>
+                    <input type="text" id="editModalHeroBadge" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-gray-400 mb-1 block">প্রধান শিরোনাম (Main Title)</label>
+                    <input type="text" id="editModalHeroTitle" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-gray-400 mb-1 block">সাবটাইটেল / বিবরণ</label>
+                    <textarea id="editModalHeroSubtitle" rows="3" class="w-full bg-darkBg border border-gray-800 text-white p-2.5 rounded-xl focus:border-purple-400 focus:outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-purple-600/30">
+                    টেক্সট আপডেট করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Action Button -->
+    <a href="https://wa.me/8801821985354?text=হ্যালো!%20Editz%20Iqra%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="fixed bottom-20 sm:bottom-6 right-4 z-50 bg-green-500 hover:bg-green-600 text-white p-3.5 rounded-full shadow-2xl transition duration-300 transform hover:scale-110 flex items-center gap-2 group">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out text-xs font-bold pr-1">হোয়াটসঅ্যাপে যোগাযোগ করুন</span>
+    </a>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-16 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+    <script>
+        // Database Initial State
+        const DEFAULT_COURSES = [
+            {
+                id: 1,
+                title: "মেগা কম্বো প্যাক: ওয়েব ডেভেলপমেন্ট + অ্যাডভান্সড ভিডিও এডিটিং",
+                category: "dev",
+                categoryName: "মাস্টারক্লাস",
+                price: 1500,
+                oldPrice: 4000,
+                rating: 4.9,
+                students: 540,
+                image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80",
+                description: "ওয়েব ডেভেলপমেন্ট (HTML, CSS, JS, Tailwind) এবং অ্যাডভান্সড ভিডিও এডিটিং (Premiere Pro & After Effects) শিখুন একটি পূর্ণাঙ্গ কম্বো কোর্সে।",
+                lessonsCount: 85,
+                duration: "৪০+ ঘণ্টা"
+            },
+            {
+                id: 2,
+                title: "ফুলস্ট্যাক ওয়েব ডেভেলপমেন্ট (MERN Stack 2026)",
+                category: "dev",
+                categoryName: "ওয়েব ডেভেলপমেন্ট",
+                price: 1200,
+                oldPrice: 3500,
+                rating: 4.8,
+                students: 410,
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
+                description: "React, Node.js, Express, MongoDB এবং Tailwind CSS দিয়ে আধুনিক ফুলস্ট্যাক প্রজেক্ট তৈরি করতে শিখুন।",
+                lessonsCount: 62,
+                duration: "৩০+ ঘণ্টা"
+            },
+            {
+                id: 3,
+                title: "স্মার্টফোন দিয়ে ভিডিও এডিটিং ও কনটেন্ট ক্রিয়েশন",
+                category: "editing",
+                categoryName: "ভিডিও এডিটিং",
+                price: 650,
+                oldPrice: 1800,
+                rating: 4.9,
+                students: 890,
+                image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80",
+                description: "CapCut ও VN দিয়ে প্রফেশনাল রিলস, শর্টস ও ইউটিউব ভিডিও এডিট করার সম্পূর্ণ গাইডলাইন।",
+                lessonsCount: 40,
+                duration: "১৬+ ঘণ্টা"
+            },
+            {
+                id: 4,
+                title: "গ্রাফিক্স ডিজাইন ও ব্র্যান্ডিং মাস্টারক্লাস (Photoshop & Illustrator)",
+                category: "design",
+                categoryName: "গ্রাফিক্স ডিজাইন",
+                price: 999,
+                oldPrice: 2500,
+                rating: 4.7,
+                students: 320,
+                image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80",
+                description: "সোশ্যাল মিডিয়া ব্যানার, লোগো ডিজাইন, পোস্টার এবং ব্র্যান্ডিং মেটেরিয়াল তৈরি করার একদম জিরো থেকে অ্যাডভান্স গাইড।",
+                lessonsCount: 48,
+                duration: "২২+ ঘণ্টা"
+            }
+        ];
+
+        const DEFAULT_STORE = [
+            {
+                id: 101,
+                title: "400+ প্রিমিয়াম বাংলা ও ইংরেজি ফন্ট কালেকশন",
+                category: "fonts",
+                price: 199,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=400&q=80",
+                format: "OTF / TTF"
+            },
+            {
+                id: 102,
+                title: "মাষ্টার ভিডিও এডিটিং সাউন্ড ইফেক্টস (SFX) প্যাক",
+                category: "editing",
+                price: 199,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=400&q=80",
+                format: "WAV / High Quality"
+            },
+            {
+                id: 103,
+                title: "৫০+ প্রিমিয়ার প্রো ট্রানজিশন ও LUTs প্রিসেট",
+                category: "editing",
+                price: 299,
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=400&q=80",
+                format: "PRFPSET / CUBE"
+            },
+            {
+                id: 104,
+                title: "সোশ্যাল মিডিয়া ক্যানভা ও PSD টেমপ্লেট কালেকশন",
+                category: "graphics",
+                price: 249,
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+                format: "PSD / Canva Link"
+            }
+        ];
+
+        const DEFAULT_REVIEWS = [
+            {
+                id: 1,
+                name: "আরিফুর রহমান",
+                role: "ফুলস্ট্যাক লার্নার",
+                comment: "কোর্সটি এক কথায় অসাধারণ! প্র্যাকটিক্যাল প্রজেক্ট করে মাত্র ২ মাসে ফ্রিল্যান্সিং কাজ পেয়েছি।",
+                rating: 5,
+                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80"
+            },
+            {
+                id: 2,
+                name: "সুমাইয়া আক্তার",
+                role: "ভিডিও এডিটিং স্টুডেন্ট",
+                comment: "মোবাইল ও পিসিতে এডিটিং শিখার জন্য ইডিটজ ইকরা সেরা। সাপোর্ট টিম খুব দ্রুত সাহায্য করে!",
+                rating: 5,
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+            }
+        ];
+
+        // Persistent Application State
+        let COURSES = JSON.parse(localStorage.getItem('eiCoursesData')) || DEFAULT_COURSES;
+        let STORE_ITEMS = JSON.parse(localStorage.getItem('eiStoreData')) || DEFAULT_STORE;
+        let REVIEWS = JSON.parse(localStorage.getItem('eiReviewsData')) || DEFAULT_REVIEWS;
+
+        let state = {
+            activeTab: 'home',
+            cart: [],
+            appliedCoupon: null,
+            discountRate: 0,
+            user: JSON.parse(localStorage.getItem('eiUser')) || null,
+            enrolledCourses: JSON.parse(localStorage.getItem('eiEnrolled')) || [1],
+            purchasedStoreItems: JSON.parse(localStorage.getItem('eiStorePurchased')) || [101],
+            orders: JSON.parse(localStorage.getItem('eiOrders')) || [
+                {
+                    orderId: "EI-829104",
+                    customerName: "আব্দুল্লাহ আল মামুন",
+                    customerPhone: "01712345678",
+                    items: ["মেগা কম্বো প্যাক: ওয়েব ডেভেলপমেন্ট + ভিডিও এডিটিং"],
+                    paymentMethod: "BKASH",
+                    trxId: "9J82K1L3",
+                    amount: 1500,
+                    date: "23/09/2026, 4:15 PM",
+                    status: "সম্পন্ন"
+                }
+            ],
+            selectedPayMethod: 'bkash',
+            isAdmin: JSON.parse(localStorage.getItem('eiIsAdmin')) || false,
+            tempUploadedImageData: '',
+            tempHeroBannerImage: '',
+            editableTexts: JSON.parse(localStorage.getItem('eiEditableTexts')) || {},
+            heroBannerData: JSON.parse(localStorage.getItem('eiHeroBannerData')) || {
+                title: "মেগা কম্বো: ফুলস্ট্যাক ডেভেলপমেন্ট + অ্যাডভান্সড এডিটিং",
+                price: "৳১৫০০",
+                oldPrice: "৳৪০০০",
+                discount: "৬২% ছাড়",
+                image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+                hidden: false
+            }
+        };
+
+        function createCourseCardHTML(course) {
+            const isEnrolled = state.enrolledCourses.includes(course.id);
+            return `
+                <div class="bg-cardBg border border-gray-800 hover:border-gray-700 rounded-2xl p-4 space-y-3 transition duration-300 flex flex-col justify-between group relative">
+                    ${state.isAdmin ? `
+                        <div class="absolute top-2 right-2 z-30 flex items-center gap-1.5 bg-black/85 p-1.5 rounded-xl border border-gray-700 backdrop-blur shadow-xl">
+                            <button onclick="openEditItemModal('course', ${course.id}); event.stopPropagation();" title="এডিট করুন" class="bg-yellow-400 hover:bg-yellow-300 text-black text-[11px] font-extrabold px-2 py-1 rounded-lg transition flex items-center gap-1 shadow">
+                                <i class="fa-solid fa-pen"></i> এডিট
+                            </button>
+                            <button onclick="deleteItem('course', ${course.id}); event.stopPropagation();" title="ডিলিট করুন" class="bg-red-600 hover:bg-red-500 text-white text-[11px] font-extrabold px-2 py-1 rounded-lg transition flex items-center gap-1 shadow glow-red">
+                                <i class="fa-solid fa-trash-can"></i> ডিলিট
+                            </button>
+                        </div>
+                    ` : ''}
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2.5 py-0.5 rounded-full font-semibold">★ ${course.categoryName || 'কোর্স'}</span>
+                            <span class="text-gray-400"><i class="fa-solid fa-user-group text-[10px] text-blue-400 mr-1"></i>${course.students} জন</span>
+                        </div>
+                        <div class="relative rounded-xl overflow-hidden aspect-video bg-gray-900 border border-gray-800">
+                            <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <h3 class="font-bold text-sm leading-snug text-white line-clamp-2">${course.title}</h3>
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-lg font-bold text-white">৳${course.price}</span>
+                                <span class="text-xs text-gray-500 line-through ml-1">৳${course.oldPrice || course.price * 2}</span>
+                            </div>
+                            <span class="bg-green-500/10 text-green-400 text-[11px] px-2 py-0.5 rounded border border-green-500/20">লাইফটাইম</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            ${isEnrolled ? 
+                                `<button onclick="switchTab('my-learning')" class="col-span-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1"><i class="fa-solid fa-circle-check"></i> দেখা শুরু করুন</button>` 
+                                : 
+                                `<button onclick="addToCart('course', ${course.id})" class="bg-accentYellow hover:bg-yellow-400 text-black font-bold py-2 rounded-xl text-xs transition">⚡ এনরোল</button>
+                                 <button onclick="openCourseModal(${course.id})" class="border border-gray-700 text-gray-300 hover:bg-gray-800 py-2 rounded-xl text-xs transition">👁️ ডিটেইলস</button>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createStoreCardHTML(item) {
+            const isPurchased = state.purchasedStoreItems.includes(item.id);
+            return `
+                <div class="bg-cardBg border border-gray-800 hover:border-gray-700 rounded-2xl p-3 space-y-2 flex flex-col justify-between transition relative group">
+                    ${state.isAdmin ? `
+                        <div class="absolute top-2 right-2 z-30 flex items-center gap-1 bg-black/85 p-1 rounded-xl border border-gray-700 backdrop-blur shadow-xl">
+                            <button onclick="openEditItemModal('store', ${item.id}); event.stopPropagation();" title="এডিট" class="bg-yellow-400 hover:bg-yellow-300 text-black text-[10px] font-extrabold px-1.5 py-0.5 rounded shadow"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteItem('store', ${item.id}); event.stopPropagation();" title="ডিলিট" class="bg-red-600 hover:bg-red-500 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded shadow glow-red"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    ` : ''}
+                    <div class="space-y-2">
+                        <div class="relative rounded-lg overflow-hidden aspect-square bg-gray-900 border border-gray-800">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
+                            <span class="absolute top-1.5 left-1.5 bg-black/80 text-yellow-400 text-[10px] px-1.5 py-0.5 rounded font-bold">★ ${item.rating || 4.9}</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-gray-200 line-clamp-2 leading-tight">${item.title}</h4>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <div class="text-sm font-bold text-yellow-400">৳${item.price}</div>
+                        ${isPurchased ? 
+                            `<button onclick="switchTab('my-learning')" class="w-full bg-blue-600/20 border border-blue-500/30 text-blue-400 text-xs font-bold py-1.5 rounded-lg flex items-center justify-center gap-1"><i class="fa-solid fa-download text-[10px]"></i> প্রস্তুত</button>` 
+                            : 
+                            `<button onclick="addToCart('store', ${item.id})" class="w-full bg-accentYellow hover:bg-yellow-400 text-black font-bold text-xs py-1.5 rounded-lg transition">কিনুন</button>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderHomeCourses() {
+            const container = document.getElementById('homeCoursesGrid');
+            if(!container) return;
+            const topCourses = COURSES.slice(0, 3);
+            container.innerHTML = topCourses.map(createCourseCardHTML).join('');
+        }
+
+        function renderAllCourses(filter = 'all') {
+            const container = document.getElementById('allCoursesGrid');
+            if(!container) return;
+            const filtered = filter === 'all' ? COURSES : COURSES.filter(c => c.category === filter);
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-3 text-center text-gray-500 text-sm py-12">কোন কোর্স পাওয়া যায়নি।</div>`;
+                return;
+            }
+            container.innerHTML = filtered.map(createCourseCardHTML).join('');
+        }
+
+        function renderHomeStore() {
+            const container = document.getElementById('homeStoreGrid');
+            if(!container) return;
+            const topStore = STORE_ITEMS.slice(0, 4);
+            container.innerHTML = topStore.map(createStoreCardHTML).join('');
+        }
+
+        function renderAllStore(filter = 'all') {
+            const container = document.getElementById('allStoreGrid');
+            if(!container) return;
+            const filtered = filter === 'all' ? STORE_ITEMS : STORE_ITEMS.filter(s => s.category === filter);
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-4 text-center text-gray-500 text-sm py-12">কোন এসেট পাওয়া যায়নি।</div>`;
+                return;
+            }
+            container.innerHTML = filtered.map(createStoreCardHTML).join('');
+        }
+
+        function renderMyLearning() {
+            const courseContainer = document.getElementById('enrolledCoursesList');
+            const storeContainer = document.getElementById('purchasedStoreList');
+
+            if(courseContainer) {
+                const myCourses = COURSES.filter(c => state.enrolledCourses.includes(c.id));
+                if(myCourses.length === 0) {
+                    courseContainer.innerHTML = `<div class="col-span-2 text-center text-gray-500 text-xs py-6 bg-cardBg rounded-xl border border-gray-800">আপনি এখনও কোনো কোর্সে এনরোল করেননি।</div>`;
+                } else {
+                    courseContainer.innerHTML = myCourses.map(c => `
+                        <div class="bg-cardBg border border-gray-800 rounded-xl p-3 flex gap-3 items-center">
+                            <img src="${c.image}" class="w-20 h-16 object-cover rounded-lg border border-gray-700">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-xs text-white truncate">${c.title}</h4>
+                                <span class="text-[10px] text-green-400">এক্সেস প্রদান করা হয়েছে</span>
+                                <button onclick="showToast('কোর্স প্লেয়ার খুলছে...', 'info')" class="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 rounded text-[11px]">ক্লাস শুরু করুন</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            if(storeContainer) {
+                const myAssets = STORE_ITEMS.filter(s => state.purchasedStoreItems.includes(s.id));
+                if(myAssets.length === 0) {
+                    storeContainer.innerHTML = `<div class="col-span-3 text-center text-gray-500 text-xs py-6 bg-cardBg rounded-xl border border-gray-800">আপনি কোনো ফাইল কেনেননি।</div>`;
+                } else {
+                    storeContainer.innerHTML = myAssets.map(s => `
+                        <div class="bg-cardBg border border-gray-800 rounded-xl p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-2 truncate">
+                                <img src="${s.image}" class="w-10 h-10 object-cover rounded-lg">
+                                <div class="truncate">
+                                    <h4 class="font-bold text-xs text-white truncate">${s.title}</h4>
+                                    <span class="text-[10px] text-yellow-400 font-mono">${s.format || 'ZIP File'}</span>
+                                </div>
+                            </div>
+                            <button onclick="showToast('ডাউনলোড ফাইল ডাউনলোড হচ্ছে...', 'success')" class="bg-green-600 text-white px-3 py-1 rounded-lg text-xs font-bold flex-shrink-0 ml-2">ডাউনলোড</button>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function filterCourses(cat) {
+            document.querySelectorAll('.course-filter-btn').forEach(b => {
+                b.className = "course-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap";
+            });
+            event.target.className = "course-filter-btn active bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap";
+            renderAllCourses(cat);
+        }
+
+        function filterStore(cat) {
+            document.querySelectorAll('.store-filter-btn').forEach(b => {
+                b.className = "store-filter-btn bg-cardBg border border-gray-800 text-gray-400 hover:text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap";
+            });
+            event.target.className = "store-filter-btn active bg-yellow-400 text-black text-xs px-3 py-1.5 rounded-lg font-bold whitespace-nowrap";
+            renderAllStore(cat);
+        }
+
+        function openAdminOrdersModal() {
+            switchTab('orders');
+        }
+
+        function renderAdminOrders() {
+            const container = document.getElementById('adminOrdersContainer');
+            const totalOrdersEl = document.getElementById('adminTotalOrders');
+            const totalRevEl = document.getElementById('adminTotalRevenue');
+            const pendingEl = document.getElementById('adminPendingOrders');
+
+            if(!container) return;
+
+            const revenue = state.orders.reduce((sum, o) => sum + (o.amount || 0), 0);
+            const pendingCount = state.orders.filter(o => o.status === 'পেন্ডিং').length;
+
+            if(totalOrdersEl) totalOrdersEl.innerText = state.orders.length;
+            if(totalRevEl) totalRevEl.innerText = `৳${revenue}`;
+            if(pendingEl) pendingEl.innerText = pendingCount;
+
+            if(state.orders.length === 0) {
+                container.innerHTML = `<div class="text-center text-gray-500 text-xs py-8 bg-cardBg rounded-xl border border-gray-800">এখনও কোনো অর্ডার পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            container.innerHTML = state.orders.map((ord, idx) => `
+                <div class="bg-cardBg border border-gray-800 p-4 rounded-xl space-y-2 text-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800 pb-2">
+                        <div>
+                            <span class="font-bold text-yellow-400 font-mono">${ord.orderId}</span>
+                            <span class="text-gray-400 text-[10px] ml-2">(${ord.date})</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-purple-900/40 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded text-[10px] font-bold">${ord.paymentMethod}</span>
+                            <span class="${ord.status === 'সম্পন্ন' ? 'bg-green-500/10 text-green-400 border-green-500/30' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'} border px-2 py-0.5 rounded text-[10px] font-bold">${ord.status}</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-300 pt-1">
+                        <div><strong>কাস্টমার:</strong> ${ord.customerName} (${ord.customerPhone})</div>
+                        <div><strong>Trx ID:</strong> <span class="font-mono text-yellow-400">${ord.trxId}</span></div>
+                        <div class="col-span-2"><strong>আইটেমসমূহ:</strong> ${ord.items.join(', ')}</div>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-800/60">
+                        <span class="text-sm font-bold text-white">মোট মূল্য: ৳${ord.amount}</span>
+                        <div class="flex gap-2">
+                            ${ord.status === 'পেন্ডিং' ? `<button onclick="approveOrder(${idx})" class="bg-green-600 hover:bg-green-500 text-white font-bold px-3 py-1 rounded-lg text-[11px]">অনুমোদন করুন</button>` : ''}
+                            <button onclick="deleteOrder(${idx})" class="bg-red-600 hover:bg-red-500 text-white font-bold px-2.5 py-1 rounded-lg text-[11px]">ডিলিট</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function approveOrder(idx) {
+            if(state.orders[idx]) {
+                state.orders[idx].status = 'সম্পন্ন';
+                localStorage.setItem('eiOrders', JSON.stringify(state.orders));
+                renderAdminOrders();
+                showToast('অর্ডার অনুমোদন করা হয়েছে!', 'success');
+            }
+        }
+
+        function deleteOrder(idx) {
+            if(!confirm("এই অর্ডারটি মুছে ফেলতে চান?")) return;
+            state.orders.splice(idx, 1);
+            localStorage.setItem('eiOrders', JSON.stringify(state.orders));
+            renderAdminOrders();
+            showToast('অর্ডার ডিলিট করা হয়েছে', 'info');
+        }
+
+        function clearAllOrders() {
+            if(!confirm("আপনি কি নিশ্চিত সমস্ত অর্ডার রিমুভ করতে চান?")) return;
+            state.orders = [];
+            localStorage.setItem('eiOrders', JSON.stringify(state.orders));
+            renderAdminOrders();
+            showToast('সমস্ত অর্ডার রিমুভ করা হয়েছে', 'info');
+        }
+
+        function handleSearch(q) {
+            const query = q.toLowerCase().trim();
+            if(!query) {
+                renderAllCourses();
+                renderAllStore();
+                return;
+            }
+            const matchedCourses = COURSES.filter(c => c.title.toLowerCase().includes(query) || c.description.toLowerCase().includes(query));
+            const matchedStore = STORE_ITEMS.filter(s => s.title.toLowerCase().includes(query));
+
+            const coursesGrid = document.getElementById('allCoursesGrid');
+            if(coursesGrid && matchedCourses.length > 0) {
+                coursesGrid.innerHTML = matchedCourses.map(createCourseCardHTML).join('');
+            }
+            const storeGrid = document.getElementById('allStoreGrid');
+            if(storeGrid && matchedStore.length > 0) {
+                storeGrid.innerHTML = matchedStore.map(createStoreCardHTML).join('');
+            }
+        }
+
+        // Hero Banner Customization Functions
+        function applyHeroBannerUI() {
+            const container = document.getElementById('heroBannerCardContainer');
+            const titleEl = document.getElementById('heroBannerTitleText');
+            const priceEl = document.getElementById('heroBannerPrice');
+            const oldPriceEl = document.getElementById('heroBannerOldPrice');
+            const imgEl = document.getElementById('heroBannerImg');
+            const controls = document.getElementById('heroBannerAdminControls');
+
+            if(state.heroBannerData.hidden) {
+                if(container) container.classList.add('hidden');
+            } else {
+                if(container) container.classList.remove('hidden');
+            }
+
+            if(titleEl) titleEl.innerText = state.heroBannerData.title;
+            if(priceEl) priceEl.innerText = state.heroBannerData.price;
+            if(oldPriceEl) oldPriceEl.innerText = state.heroBannerData.oldPrice;
+            if(imgEl) imgEl.src = state.heroBannerData.image;
+
+            if(state.isAdmin && controls) {
+                controls.classList.remove('hidden');
+            } else if(controls) {
+                controls.classList.add('hidden');
+            }
+        }
+
+        function openHeroBannerEditModal() {
+            document.getElementById('editHeroBannerTitle').value = state.heroBannerData.title;
+            document.getElementById('editHeroBannerPrice').value = state.heroBannerData.price;
+            document.getElementById('editHeroBannerOldPrice').value = state.heroBannerData.oldPrice;
+            document.getElementById('editHeroBannerUrl').value = state.heroBannerData.image;
+            state.tempHeroBannerImage = state.heroBannerData.image;
+            document.getElementById('heroBannerEditModal').classList.remove('hidden');
+        }
+
+        function closeHeroBannerEditModal() {
+            document.getElementById('heroBannerEditModal').classList.add('hidden');
+        }
+
+        function previewHeroBannerImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    state.tempHeroBannerImage = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleSaveHeroBanner(e) {
+            e.preventDefault();
+            const title = document.getElementById('editHeroBannerTitle').value.trim();
+            const price = document.getElementById('editHeroBannerPrice').value.trim();
+            const oldPrice = document.getElementById('editHeroBannerOldPrice').value.trim();
+            const manualUrl = document.getElementById('editHeroBannerUrl').value.trim();
+
+            state.heroBannerData.title = title;
+            state.heroBannerData.price = price.startsWith('৳') ? price : '৳' + price;
+            state.heroBannerData.oldPrice = oldPrice.startsWith('৳') ? oldPrice : '৳' + oldPrice;
+            state.heroBannerData.image = state.tempHeroBannerImage || manualUrl || state.heroBannerData.image;
+
+            localStorage.setItem('eiHeroBannerData', JSON.stringify(state.heroBannerData));
+            applyHeroBannerUI();
+            closeHeroBannerEditModal();
+            showToast('হিরো ব্যানার সফলভাবে আপডেট হয়েছে!', 'success');
+        }
+
+        function toggleHideHeroBanner() {
+            if(!confirm("আপনি কি হিরো অফার ব্যানারটি মুছে ফেলতে / হাইড করতে চান?")) return;
+            state.heroBannerData.hidden = true;
+            localStorage.setItem('eiHeroBannerData', JSON.stringify(state.heroBannerData));
+            applyHeroBannerUI();
+            showToast('হিরো ব্যানারটি মুছে ফেলা হয়েছে', 'info');
+        }
+
+        // Hero Text Modal Functions
+        function openHeroEditModal() {
+            document.getElementById('editModalHeroBadge').value = document.getElementById('heroBadge').innerText;
+            document.getElementById('editModalHeroTitle').value = document.getElementById('heroTitle').innerText;
+            document.getElementById('editModalHeroSubtitle').value = document.getElementById('heroSubtitle').innerText;
+            document.getElementById('heroTextModal').classList.remove('hidden');
+        }
+
+        function closeHeroEditModal() {
+            document.getElementById('heroTextModal').classList.add('hidden');
+        }
+
+        function handleSaveHeroTextModal(e) {
+            e.preventDefault();
+            const badge = document.getElementById('editModalHeroBadge').value;
+            const title = document.getElementById('editModalHeroTitle').value;
+            const subtitle = document.getElementById('editModalHeroSubtitle').value;
+
+            document.getElementById('heroBadge').innerText = badge;
+            document.getElementById('heroTitle').innerText = title;
+            document.getElementById('heroSubtitle').innerText = subtitle;
+
+            saveEditableText('heroBadge', badge);
+            saveEditableText('heroTitle', title);
+            saveEditableText('heroSubtitle', subtitle);
+
+            closeHeroEditModal();
+            showToast('হিরো সেকশনের টেক্সট পরিবর্তিত হয়েছে!', 'success');
+        }
+
+        function toggleAdminPrompt() {
+            if(state.isAdmin) {
+                state.isAdmin = false;
+                localStorage.setItem('eiIsAdmin', 'false');
+                updateAdminUI();
+                showToast('এডমিন মুড বন্ধ করা হয়েছে', 'info');
+            } else {
+                document.getElementById('adminPinModal').classList.remove('hidden');
+                const pinInput = document.getElementById('adminPinInput');
+                pinInput.value = '';
+                pinInput.focus();
+            }
+        }
+
+        function closeAdminPinModal() {
+            document.getElementById('adminPinModal').classList.add('hidden');
+            document.getElementById('adminPinInput').value = '';
+        }
+
+        function verifyAdminPin() {
+            const pin = document.getElementById('adminPinInput').value.trim();
+            if(pin === '0987' || pin === '1234') {
+                state.isAdmin = true;
+                localStorage.setItem('eiIsAdmin', 'true');
+                closeAdminPinModal();
+                updateAdminUI();
+                showToast('এডমিন মুড সফলভাবে সক্রিয় হয়েছে! 🔓', 'success');
+            } else {
+                showToast('ভুল পিন নম্বর! আবার চেষ্টা করুন (পিন: 0987)', 'error');
+            }
+        }
+
+        function updateAdminUI() {
+            const banner = document.getElementById('adminModeBanner');
+            const btnText = document.getElementById('adminBtnText');
+            const addCourseBtn = document.getElementById('addCourseBtn');
+            const addStoreBtn = document.getElementById('addStoreBtn');
+            const addReviewBtn = document.getElementById('addReviewBtn');
+            const heroAdminBtn = document.getElementById('heroAdminBtn');
+
+            const editableElements = ['heroBadge', 'heroTitle', 'heroSubtitle'];
+
+            if(state.isAdmin) {
+                banner.classList.remove('hidden');
+                btnText.innerText = "এডমিন এক্টিভ (বন্ধ করুন)";
+                if(addCourseBtn) addCourseBtn.classList.remove('hidden');
+                if(addStoreBtn) addStoreBtn.classList.remove('hidden');
+                if(addReviewBtn) addReviewBtn.classList.remove('hidden');
+                if(heroAdminBtn) heroAdminBtn.classList.remove('hidden');
+
+                editableElements.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        el.setAttribute('contenteditable', 'true');
+                        el.classList.add('admin-editable-active');
+                    }
+                });
+            } else {
+                banner.classList.add('hidden');
+                btnText.innerText = "এডমিন প্যানেল";
+                if(addCourseBtn) addCourseBtn.classList.add('hidden');
+                if(addStoreBtn) addStoreBtn.classList.add('hidden');
+                if(addReviewBtn) addReviewBtn.classList.add('hidden');
+                if(heroAdminBtn) heroAdminBtn.classList.add('hidden');
+
+                editableElements.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) {
+                        el.setAttribute('contenteditable', 'false');
+                        el.classList.remove('admin-editable-active');
+                    }
+                });
+            }
+
+            renderHomeCourses();
+            renderAllCourses();
+            renderHomeStore();
+            renderAllStore();
+            renderAdminOrders();
+            renderReviews();
+            updateStatsDisplay();
+            applyHeroBannerUI();
+            loadSavedEditableTexts();
+        }
+
+        function saveEditableText(elementId, text) {
+            state.editableTexts[elementId] = text;
+            localStorage.setItem('eiEditableTexts', JSON.stringify(state.editableTexts));
+        }
+
+        function loadSavedEditableTexts() {
+            Object.keys(state.editableTexts).forEach(id => {
+                const el = document.getElementById(id);
+                if(el && state.editableTexts[id]) el.innerText = state.editableTexts[id];
+            });
+        }
+
+        function openAddCourseModal() {
+            document.getElementById('itemEditTitle').innerText = "নতুন কোর্স যোগ করুন";
+            document.getElementById('editItemType').value = "course";
+            document.getElementById('editItemId').value = "new";
+            document.getElementById('editTitle').value = "";
+            document.getElementById('editPrice').value = "";
+            document.getElementById('editOldPrice').value = "";
+            document.getElementById('editStudents').value = "10";
+            document.getElementById('editDescription').value = "";
+            document.getElementById('editImageUrl').value = "";
+            document.getElementById('editImageFile').value = "";
+            document.getElementById('imagePreviewBox').classList.add('hidden');
+            document.getElementById('descriptionGroup').classList.remove('hidden');
+            document.getElementById('oldPriceGroup').classList.remove('hidden');
+            document.getElementById('studentCountGroup').classList.remove('hidden');
+            state.tempUploadedImageData = '';
+            document.getElementById('itemEditModal').classList.remove('hidden');
+        }
+
+        function openAddStoreModal() {
+            document.getElementById('itemEditTitle').innerText = "নতুন ডিজিটাল এসেট যোগ করুন";
+            document.getElementById('editItemType').value = "store";
+            document.getElementById('editItemId').value = "new";
+            document.getElementById('editTitle').value = "";
+            document.getElementById('editPrice').value = "";
+            document.getElementById('editImageUrl').value = "";
+            document.getElementById('editImageFile').value = "";
+            document.getElementById('imagePreviewBox').classList.add('hidden');
+            document.getElementById('descriptionGroup').classList.add('hidden');
+            document.getElementById('oldPriceGroup').classList.add('hidden');
+            document.getElementById('studentCountGroup').classList.add('hidden');
+            state.tempUploadedImageData = '';
+            document.getElementById('itemEditModal').classList.remove('hidden');
+        }
+
+        function openEditItemModal(type, id) {
+            const item = type === 'course' ? COURSES.find(c => c.id === id) : STORE_ITEMS.find(s => s.id === id);
+            if(!item) return;
+
+            document.getElementById('itemEditTitle').innerText = type === 'course' ? "কোর্স বিবরণ এডিট করুন" : "স্টোর আইটেম এডিট করুন";
+            document.getElementById('editItemType').value = type;
+            document.getElementById('editItemId').value = id;
+            document.getElementById('editTitle').value = item.title;
+            document.getElementById('editPrice').value = item.price;
+            if(type === 'course') {
+                document.getElementById('editOldPrice').value = item.oldPrice || '';
+                document.getElementById('editStudents').value = item.students || 0;
+                document.getElementById('editDescription').value = item.description || '';
+                document.getElementById('descriptionGroup').classList.remove('hidden');
+                document.getElementById('oldPriceGroup').classList.remove('hidden');
+                document.getElementById('studentCountGroup').classList.remove('hidden');
+            } else {
+                document.getElementById('descriptionGroup').classList.add('hidden');
+                document.getElementById('oldPriceGroup').classList.add('hidden');
+                document.getElementById('studentCountGroup').classList.add('hidden');
+            }
+            document.getElementById('editImageUrl').value = item.image || '';
+            document.getElementById('imagePreviewImg').src = item.image || '';
+            document.getElementById('imagePreviewBox').classList.remove('hidden');
+            state.tempUploadedImageData = item.image;
+
+            document.getElementById('itemEditModal').classList.remove('hidden');
+        }
+
+        function closeItemEditModal() {
+            document.getElementById('itemEditModal').classList.add('hidden');
+        }
+
+        function previewUploadedImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    state.tempUploadedImageData = e.target.result;
+                    document.getElementById('imagePreviewImg').src = e.target.result;
+                    document.getElementById('imagePreviewBox').classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleSaveItem(e) {
+            e.preventDefault();
+            const type = document.getElementById('editItemType').value;
+            const id = document.getElementById('editItemId').value;
+            const title = document.getElementById('editTitle').value.trim();
+            const price = parseFloat(document.getElementById('editPrice').value);
+            const oldPrice = parseFloat(document.getElementById('editOldPrice').value) || price * 2;
+            const studentsCount = parseInt(document.getElementById('editStudents').value) || 0;
+            const category = document.getElementById('editCategory').value;
+            const description = document.getElementById('editDescription').value.trim();
+            const manualUrl = document.getElementById('editImageUrl').value.trim();
+
+            const finalImage = state.tempUploadedImageData || manualUrl || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80";
+
+            if(type === 'course') {
+                if(id === 'new') {
+                    const newCourse = {
+                        id: Date.now(),
+                        title,
+                        category,
+                        categoryName: category === 'dev' ? 'ওয়েব দেভ' : 'ভিডিও এডিটিং',
+                        price,
+                        oldPrice,
+                        rating: 5.0,
+                        students: studentsCount,
+                        image: finalImage,
+                        description: description || 'নতুন প্র্যাকটিকাল কোর্স',
+                        lessonsCount: 30,
+                        duration: '২০+ ঘণ্টা'
+                    };
+                    COURSES.unshift(newCourse);
+                } else {
+                    const course = COURSES.find(c => c.id === parseInt(id));
+                    if(course) {
+                        course.title = title;
+                        course.price = price;
+                        course.oldPrice = oldPrice;
+                        course.students = studentsCount;
+                        course.category = category;
+                        course.description = description;
+                        course.image = finalImage;
+                    }
+                }
+                localStorage.setItem('eiCoursesData', JSON.stringify(COURSES));
+            } else {
+                if(id === 'new') {
+                    const newStoreItem = {
+                        id: Date.now(),
+                        title,
+                        category,
+                        price,
+                        rating: 5.0,
+                        image: finalImage,
+                        format: 'ZIP / HD'
+                    };
+                    STORE_ITEMS.unshift(newStoreItem);
+                } else {
+                    const item = STORE_ITEMS.find(s => s.id === parseInt(id));
+                    if(item) {
+                        item.title = title;
+                        item.price = price;
+                        item.category = category;
+                        item.image = finalImage;
+                    }
+                }
+                localStorage.setItem('eiStoreData', JSON.stringify(STORE_ITEMS));
+            }
+
+            closeItemEditModal();
+            updateAdminUI();
+            showToast('প্রোডাক্ট সফলভাবে যুক্ত/আপডেট হয়েছে!', 'success');
+        }
+
+        function deleteItem(type, id) {
+            if(!confirm("আপনি কি নিশ্চিতভাবে এই প্রোডাক্টটি মুছে ফেলতে চান?")) return;
+
+            if(type === 'course') {
+                COURSES = COURSES.filter(c => c.id !== id);
+                localStorage.setItem('eiCoursesData', JSON.stringify(COURSES));
+            } else {
+                STORE_ITEMS = STORE_ITEMS.filter(s => s.id !== id);
+                localStorage.setItem('eiStoreData', JSON.stringify(STORE_ITEMS));
+            }
+            updateAdminUI();
+            showToast('প্রোডাক্টটি সফলভাবে ডিলিট করা হয়েছে!', 'info');
+        }
+
+        function addToCart(type, id) {
+            const item = type === 'course' ? COURSES.find(c => c.id === id) : STORE_ITEMS.find(s => s.id === id);
+            if(!item) return;
+
+            const existing = state.cart.find(i => i.id === id && i.type === type);
+            if(existing) {
+                showToast('আইটেমটি ইতিমধ্যেই কার্টে যোগ করা আছে', 'info');
+                openCartModal();
+                return;
+            }
+
+            state.cart.push({ ...item, type });
+            updateCartUI();
+            showToast('কার্টে যোগ করা হয়েছে!', 'success');
+        }
+
+        function removeFromCart(type, id) {
+            state.cart = state.cart.filter(i => !(i.id === id && i.type === type));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const container = document.getElementById('cartItemsContainer');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const discountEl = document.getElementById('cartDiscount');
+            const totalEl = document.getElementById('cartTotal');
+
+            badge.innerText = state.cart.length;
+            if(state.cart.length > 0) badge.classList.remove('hidden');
+            else badge.classList.add('hidden');
+
+            if(state.cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-500 text-xs"><i class="fa-solid fa-cart-flatbed text-2xl mb-2 block"></i>আপনার কার্ট ফাঁকা রয়েছে।</div>`;
+                subtotalEl.innerText = '৳০';
+                discountEl.innerText = '-৳০';
+                totalEl.innerText = '৳০';
+                return;
+            }
+
+            const subtotal = state.cart.reduce((sum, item) => sum + item.price, 0);
+            const discount = subtotal * state.discountRate;
+            const total = subtotal - discount;
+
+            container.innerHTML = state.cart.map(item => `
+                <div class="flex items-center justify-between bg-darkBg p-2.5 rounded-xl border border-gray-800 text-xs">
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <img src="${item.image}" class="w-10 h-10 object-cover rounded-lg border border-gray-700 flex-shrink-0">
+                        <div class="truncate">
+                            <h4 class="font-bold text-white truncate">${item.title}</h4>
+                            <span class="text-yellow-400 font-semibold">৳${item.price}</span>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart('${item.type}', ${item.id})" class="text-red-400 hover:text-red-300 p-1.5 rounded-lg"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `).join('');
+
+            subtotalEl.innerText = `৳${subtotal}`;
+            discountEl.innerText = `-৳${discount}`;
+            totalEl.innerText = `৳${total}`;
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim().toUpperCase();
+            const msg = document.getElementById('couponMessage');
+            if(code === 'PRO50') {
+                state.discountRate = 0.5;
+                state.appliedCoupon = 'PRO50';
+                msg.innerText = "৫০% ছাড় সফলভাবে প্রযোজ্য হয়েছে!";
+                msg.className = "text-[11px] text-green-400 font-bold block";
+            } else {
+                msg.innerText = "ভুল প্রমো কোড!";
+                msg.className = "text-[11px] text-red-400 font-bold block";
+            }
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            updateCartUI();
+            document.getElementById('cartModal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function startCheckout() {
+            if(state.cart.length === 0) {
+                showToast('আপনার কার্ট ফাঁকা!', 'error');
+                return;
+            }
+            closeCartModal();
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        function selectPayMethod(method) {
+            state.selectedPayMethod = method;
+            document.querySelectorAll('.pay-method-btn').forEach(btn => {
+                btn.className = "pay-method-btn bg-darkBg border border-gray-800 text-gray-400 font-bold p-2.5 rounded-xl text-xs text-center";
+            });
+            const selectedBtn = document.getElementById(`pay-${method}`);
+            if(selectedBtn) {
+                selectedBtn.className = "pay-method-btn bg-pink-900/30 border-2 border-pink-500 text-pink-300 font-bold p-2.5 rounded-xl text-xs text-center";
+            }
+        }
+
+        function confirmPayment() {
+            const trxId = document.getElementById('trxIdInput').value.trim();
+            if(!trxId) {
+                showToast('অনুগ্রহ করে Transaction ID প্রদান করুন', 'error');
+                return;
+            }
+
+            const customerName = state.user ? state.user.name : "মেহমান কাস্টমার";
+            const customerPhone = state.user ? state.user.phone : "N/A";
+            const totalPaid = state.cart.reduce((acc, curr) => acc + curr.price, 0) * (1 - state.discountRate);
+
+            const newOrder = {
+                orderId: "EI-" + Math.floor(100000 + Math.random() * 900000),
+                customerName,
+                customerPhone,
+                items: state.cart.map(i => i.title),
+                paymentMethod: state.selectedPayMethod.toUpperCase(),
+                trxId,
+                amount: totalPaid,
+                date: new Date().toLocaleString('bn-BD'),
+                status: 'পেন্ডিং'
+            };
+
+            state.orders.unshift(newOrder);
+            localStorage.setItem('eiOrders', JSON.stringify(state.orders));
+
+            state.cart.forEach(item => {
+                if(item.type === 'course') {
+                    if(!state.enrolledCourses.includes(item.id)) state.enrolledCourses.push(item.id);
+                    const targetCourse = COURSES.find(c => c.id === item.id);
+                    if(targetCourse) {
+                        targetCourse.students = (targetCourse.students || 0) + 1;
+                    }
+                } else {
+                    if(!state.purchasedStoreItems.includes(item.id)) state.purchasedStoreItems.push(item.id);
+                }
+            });
+
+            localStorage.setItem('eiCoursesData', JSON.stringify(COURSES));
+            localStorage.setItem('eiEnrolled', JSON.stringify(state.enrolledCourses));
+            localStorage.setItem('eiStorePurchased', JSON.stringify(state.purchasedStoreItems));
+
+            state.cart = [];
+            state.appliedCoupon = null;
+            state.discountRate = 0;
+            updateCartUI();
+
+            closePaymentModal();
+            showToast('পেমেন্ট সফলভাবে জমা হয়েছে! এক্সেস দেওয়া হয়েছে 🎉', 'success');
+            
+            updateStatsDisplay();
+            switchTab('my-learning');
+            renderAdminOrders();
+        }
+
+        // Student Review Modal & CRUD Logic
+        function openAddReviewModal() {
+            document.getElementById('reviewEditTitle').innerText = "নতুন রিভিউ যোগ করুন";
+            document.getElementById('editReviewId').value = "new";
+            document.getElementById('editReviewName').value = "";
+            document.getElementById('editReviewRole').value = "";
+            document.getElementById('editReviewComment').value = "";
+            document.getElementById('editReviewAvatar').value = "";
+            document.getElementById('reviewEditModal').classList.remove('hidden');
+        }
+
+        function openEditReviewModal(id) {
+            const rev = REVIEWS.find(r => r.id === id);
+            if(!rev) return;
+            document.getElementById('reviewEditTitle').innerText = "রিভিউ এডিট করুন";
+            document.getElementById('editReviewId').value = id;
+            document.getElementById('editReviewName').value = rev.name;
+            document.getElementById('editReviewRole').value = rev.role;
+            document.getElementById('editReviewComment').value = rev.comment;
+            document.getElementById('editReviewAvatar').value = rev.avatar || "";
+            document.getElementById('reviewEditModal').classList.remove('hidden');
+        }
+
+        function closeReviewEditModal() {
+            document.getElementById('reviewEditModal').classList.add('hidden');
+        }
+
+        function handleSaveReview(e) {
+            e.preventDefault();
+            const id = document.getElementById('editReviewId').value;
+            const name = document.getElementById('editReviewName').value.trim();
+            const role = document.getElementById('editReviewRole').value.trim();
+            const comment = document.getElementById('editReviewComment').value.trim();
+            const avatar = document.getElementById('editReviewAvatar').value.trim() || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80";
+
+            if(id === 'new') {
+                const newRev = {
+                    id: Date.now(),
+                    name,
+                    role,
+                    comment,
+                    rating: 5,
+                    avatar
+                };
+                REVIEWS.unshift(newRev);
+            } else {
+                const rev = REVIEWS.find(r => r.id === parseInt(id));
+                if(rev) {
+                    rev.name = name;
+                    rev.role = role;
+                    rev.comment = comment;
+                    rev.avatar = avatar;
+                }
+            }
+
+            localStorage.setItem('eiReviewsData', JSON.stringify(REVIEWS));
+            closeReviewEditModal();
+            renderReviews();
+            showToast('রিভিউ সেভ হয়েছে!', 'success');
+        }
+
+        function deleteReview(id) {
+            if(!confirm("আপনি কি এই রিভিউটি মুছে ফেলতে চান?")) return;
+            REVIEWS = REVIEWS.filter(r => r.id !== id);
+            localStorage.setItem('eiReviewsData', JSON.stringify(REVIEWS));
+            renderReviews();
+            showToast('রিভিউ রিমুভ করা হয়েছে', 'info');
+        }
+
+        function renderReviews() {
+            const container = document.getElementById('reviewsGrid');
+            if(!container) return;
+
+            if(REVIEWS.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center text-gray-500 text-xs py-4">এখনও কোনো রিভিউ যুক্ত করা হয়নি।</div>`;
+                return;
+            }
+
+            container.innerHTML = REVIEWS.map(r => `
+                <div class="bg-darkBg border border-gray-800 p-3.5 rounded-xl space-y-2 relative group">
+                    ${state.isAdmin ? `
+                        <div class="absolute top-2 right-2 flex items-center gap-1 bg-black/80 p-1 rounded-lg">
+                            <button onclick="openEditReviewModal(${r.id})" class="bg-yellow-400 text-black text-[10px] px-1.5 py-0.5 rounded font-bold"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteReview(${r.id})" class="bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    ` : ''}
+                    <div class="flex items-center gap-3">
+                        <img src="${r.avatar}" class="w-9 h-9 rounded-full object-cover border border-yellow-400/40">
+                        <div>
+                            <h4 class="font-bold text-xs text-white">${r.name}</h4>
+                            <p class="text-[10px] text-yellow-400 font-medium">${r.role}</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed italic">"${r.comment}"</p>
+                    <div class="text-yellow-400 text-[10px]">★★★★★</div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatsDisplay() {
+            const totalStudents = COURSES.reduce((sum, c) => sum + (c.students || 0), 0);
+            const totalStudentsEl = document.getElementById('totalStudentsStat');
+            const totalCoursesEl = document.getElementById('totalCoursesStat');
+            const totalStoreEl = document.getElementById('totalStoreStat');
+
+            if(totalStudentsEl) totalStudentsEl.innerText = totalStudents.toLocaleString('bn-BD') + "+";
+            if(totalCoursesEl) totalCoursesEl.innerText = COURSES.length.toString() + "+";
+            if(totalStoreEl) totalStoreEl.innerText = STORE_ITEMS.length.toString() + "+";
+        }
+
+        function openCourseModal(id) {
+            const course = COURSES.find(c => c.id === id);
+            if(!course) return;
+            const isEnrolled = state.enrolledCourses.includes(course.id);
+
+            const body = document.getElementById('courseModalBody');
+            body.innerHTML = `
+                <div class="relative aspect-video rounded-2xl overflow-hidden bg-gray-900 border border-gray-800">
+                    <img src="${course.image}" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 text-xs px-2.5 py-0.5 rounded-md font-bold">${course.categoryName || 'কোর্স'}</span>
+                    <h2 class="text-xl font-bold text-white mt-2">${course.title}</h2>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">${course.description}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-xs bg-darkBg p-3 rounded-xl border border-gray-800">
+                    <div><strong>মোট লেসন:</strong> ${course.lessonsCount || 40} টি</div>
+                    <div><strong>কোর্সের সময়সূচী:</strong> ${course.duration || '২৫+ ঘণ্টা'}</div>
+                    <div><strong>মোট শিক্ষার্থী:</strong> ${course.students || 0} জন</div>
+                    <div><strong>রেটিং:</strong> ★ ${course.rating || 5.0}</div>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <div>
+                        <span class="text-2xl font-black text-yellow-400">৳${course.price}</span>
+                        <span class="text-xs text-gray-500 line-through ml-2">৳${course.oldPrice || course.price * 2}</span>
+                    </div>
+                    ${isEnrolled ? 
+                        `<button onclick="closeCourseModal(); switchTab('my-learning')" class="bg-green-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs">মাই লাইব্রেরি খুলুন</button>` :
+                        `<button onclick="closeCourseModal(); addToCart('course', ${course.id})" class="bg-accentYellow hover:bg-yellow-400 text-black font-bold px-6 py-2.5 rounded-xl text-xs transition">এখনই এনরোল করুন</button>`
+                    }
+                </div>
+            `;
+            document.getElementById('courseModal').classList.remove('hidden');
+        }
+
+        function closeCourseModal() {
+            document.getElementById('courseModal').classList.add('hidden');
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('loginName').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
+            state.user = { name, phone };
+            localStorage.setItem('eiUser', JSON.stringify(state.user));
+            updateUserUI();
+            closeLoginModal();
+            showToast(`স্বাগতম ${name}!`, 'success');
+        }
+
+        function updateUserUI() {
+            const userNameBtn = document.getElementById('userNameBtn');
+            if(state.user && userNameBtn) {
+                userNameBtn.innerText = state.user.name;
+            }
+        }
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const activeTabEl = document.getElementById(`tab-${tabId}`);
+            if(activeTabEl) activeTabEl.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('text-yellow-400'));
+            const activeNavBtn = document.getElementById(`nav-btn-${tabId}`);
+            if(activeNavBtn) activeNavBtn.classList.add('text-yellow-400');
+
+            if(tabId === 'my-learning') renderMyLearning();
+            if(tabId === 'orders') renderAdminOrders();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600';
+            toast.className = `${bgClass} text-white text-xs px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 transform transition-all duration-300 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function startCountdown() {
+            let seconds = 18000;
+            setInterval(() => {
+                seconds--;
+                if(seconds < 0) seconds = 18000;
+                const h = Math.floor(seconds / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = seconds % 60;
+                const hEl = document.getElementById('timerHours');
+                const mEl = document.getElementById('timerMinutes');
+                const sEl = document.getElementById('timerSeconds');
+                if(hEl) hEl.innerText = h.toString().padStart(2, '0');
+                if(mEl) mEl.innerText = m.toString().padStart(2, '0');
+                if(sEl) sEl.innerText = s.toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        // Application Initialization on Window Load
+        window.onload = function() {
+            renderHomeCourses();
+            renderAllCourses();
+            renderHomeStore();
+            renderAllStore();
+            renderReviews();
+            updateStatsDisplay();
+            updateUserUI();
+            updateAdminUI();
+            applyHeroBannerUI();
+            loadSavedEditableTexts();
+            startCountdown();
+        };
+    </script>
+</body>
+</html>
+```
