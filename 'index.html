@@ -1,0 +1,762 @@
+```html
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editz Iqra</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            padding-bottom: 80px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .logo-img {
+            width: 35px;
+            height: 35px;
+            background-color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-head-btn {
+            background-color: #25d366;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .admin-status-btn {
+            background-color: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+        }
+
+        .admin-status-btn.active {
+            background-color: #059669;
+            color: #ffffff;
+            border-color: #10b981;
+        }
+
+        /* Edit Pencil Icon */
+        .edit-pencil {
+            color: #3b82f6;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .edit-pencil:hover {
+            transform: scale(1.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 35px 20px;
+            background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+        }
+
+        .hero h1 {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Section Title */
+        .section-title {
+            padding: 12px 20px;
+            font-size: 18px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Responsive Card Grid */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #1f2937;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #374151;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Image Display Fix: Allow Natural Sizes and Ratios */
+        .card-img-wrapper {
+            width: 100%;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            display: block;
+        }
+
+        .img-fit-auto {
+            object-fit: unset;
+            height: auto !important;
+        }
+        .img-fit-contain {
+            object-fit: contain;
+            height: 250px !important;
+        }
+        .img-fit-cover {
+            object-fit: cover;
+            height: 200px !important;
+        }
+
+        .card-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f3f4f6;
+        }
+
+        .card-price {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #2563eb;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-wa {
+            background-color: #25d366;
+            width: auto;
+            min-width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Floating Admin Button (+) */
+        .admin-float-btn {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        /* Floating WhatsApp Button */
+        .wa-float-btn {
+            position: fixed;
+            bottom: 75px;
+            left: 20px;
+            width: 52px;
+            height: 52px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        /* Pop-up Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background-color: #1f2937;
+            padding: 22px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 420px;
+            border: 1px solid #374151;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #f3f4f6;
+        }
+
+        .modal-content label {
+            display: block;
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 8px 0 4px;
+        }
+
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #374151;
+            background-color: #111827;
+            color: white;
+            outline: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #111827;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #1f2937;
+            z-index: 900;
+        }
+
+        .nav-item {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 11px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item.active {
+            color: #3b82f6;
+        }
+
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <div class="logo-img">EI</div>
+            <span id="siteTitle">Editz Iqra</span>
+            <i class="fa-solid fa-pen edit-pencil" id="editTitleBtn" onclick="editSiteTitle()" style="display:none;" title="টাইটেল পরিবর্তন করুন"></i>
+        </div>
+        <div class="nav-right-actions">
+            <a href="https://wa.me/8801821985354" target="_blank" class="whatsapp-head-btn">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <button class="admin-status-btn" id="adminToggleBtn" onclick="handleAdminButtonClick()">
+                <i class="fa-solid fa-lock"></i> <span id="adminBtnText">এডমিন</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Page 1: Home Page -->
+    <div id="homePage" class="page-section active">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1><span id="heroHeader">Editz Iqra-তে স্বাগতম</span> <i class="fa-solid fa-pen edit-pencil" onclick="editHeroHeader()" id="editHeroBtn" style="display:none;"></i></h1>
+            <p id="heroSubtext">বাংলাদেশের ক্রিয়েটরদের জন্য সেরা লার্নিং প্ল্যাটফর্ম।</p>
+        </div>
+
+        <!-- Course List Section -->
+        <div class="section-title">
+            <span>সেরা মাস্টারক্লাস ও পোস্টসমূহ</span>
+        </div>
+        
+        <div class="card-container" id="cardContainer">
+            <!-- Cards loaded dynamically via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Page 2: Courses Page -->
+    <div id="coursesPage" class="page-section">
+        <div class="section-title">সকল কোর্সসমূহ</div>
+        <div class="card-container" id="coursesContainer"></div>
+    </div>
+
+    <!-- Page 3: Store Page -->
+    <div id="storePage" class="page-section">
+        <div class="section-title">ডিজিটাল স্টোর ও রিসোর্স</div>
+        <div class="card-container" id="storeContainer"></div>
+    </div>
+
+    <!-- Floating Add Button (+) -->
+    <div class="admin-float-btn" onclick="openAddModal()">+</div>
+
+    <!-- Floating WhatsApp Widget Button -->
+    <a href="https://wa.me/8801821985354?text=হ্যালো!%20আমি%20Editz%20Iqra%20ওয়েবসাইট%20থেকে%20যোগাযোগ%20করছি।" target="_blank" class="wa-float-btn" title="WhatsApp-এ মেসেজ দিন">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h3>এডমিন মোড অ্যাক্টিভ করুন</h3>
+            <p style="color: #9ca3af; font-size: 13px; margin-bottom: 12px;">এডিট করার অনুমতি পাওয়ার জন্য আপনার গোপন এডমিন পাসওয়ার্ড লিখুন:</p>
+            <input type="password" id="adminPasswordInput" placeholder="এডমিন পাসওয়ার্ড লিখুন">
+            <div class="modal-actions">
+                <button class="btn" onclick="verifyAdminPassword()">লগইন</button>
+                <button class="btn" style="background-color: #ef4444;" onclick="closeModal('passwordModal')">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Add / Edit Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <h3 id="postModalTitle">নতুন কোর্স/বিজ্ঞাপন যোগ করুন</h3>
+            
+            <label>ছবি আপলোড করুন (File Upload):</label>
+            <input type="file" id="itemImageFile" accept="image/*">
+            
+            <label>অথবা ছবির অনলাইন লিংক (URL):</label>
+            <input type="text" id="imgUrl" placeholder="https://example.com/image.jpg">
+
+            <label>ছবি দেখানোর সাইজ/স্টাইল:</label>
+            <select id="imgFitStyle">
+                <option value="img-fit-auto">অরিজিনাল সাইজ (Natural Image Height)</option>
+                <option value="img-fit-contain">ফিট পুরো ছবি (Fit inside - Contain)</option>
+                <option value="img-fit-cover">কভার (Crop & Cover)</option>
+            </select>
+
+            <label>কোর্স/পোস্টের শিরোনাম:</label>
+            <input type="text" id="itemTitle" placeholder="যেমন: মোবাইল দিয়ে ভিডিও এডিটিং">
+
+            <label>মূল্য / ফি:</label>
+            <input type="text" id="itemPrice" placeholder="যেমন: ৳১৫০০ বা ফ্রি">
+
+            <label>বাটন লিংকের ঠিকানা (URL) (ফাঁকা রাখলে WhatsApp এ মেসেজ যাবে):</label>
+            <input type="text" id="itemLink" placeholder="https://example.com (ঐচ্ছিক)">
+
+            <div class="modal-actions">
+                <button class="btn" onclick="savePost()">পাবলিশ করুন</button>
+                <button class="btn" style="background-color: #ef4444;" onclick="closeModal('postModal')">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="javascript:void(0)" class="nav-item active" onclick="switchPage('homePage', this)">
+            <i class="fa-solid fa-house"></i>
+            <span>হোম</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="switchPage('coursesPage', this)">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>কোর্স</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="switchPage('storePage', this)">
+            <i class="fa-solid fa-store"></i>
+            <span>স্টোর</span>
+        </a>
+    </div>
+
+    <script>
+        // Secret Admin Credentials
+        const SECRET_PASS = "iqrasahadath590@gmail.com";
+        const ADMIN_WA_NUMBER = "8801821985354";
+        let isAdminLoggedIn = false;
+        let editingCardId = null;
+
+        // Default initial items if storage is empty
+        const defaultItems = [
+            {
+                id: 1,
+                title: "এডভান্সড ভিডিও এডিটিং মাস্টারকোর্স",
+                price: "৳১৫০০",
+                img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
+                fitStyle: "img-fit-auto",
+                link: ""
+            }
+        ];
+
+        // Load data on page launch
+        window.onload = function() {
+            loadCards();
+            loadHeaderData();
+        };
+
+        function getSavedCards() {
+            const saved = localStorage.getItem('iqra_cards');
+            return saved ? JSON.parse(saved) : defaultItems;
+        }
+
+        function saveCardsToStorage(cards) {
+            localStorage.setItem('iqra_cards', JSON.stringify(cards));
+        }
+
+        function loadCards() {
+            const cards = getSavedCards();
+            const container = document.getElementById('cardContainer');
+            const coursesContainer = document.getElementById('coursesContainer');
+            const storeContainer = document.getElementById('storeContainer');
+
+            container.innerHTML = "";
+            coursesContainer.innerHTML = "";
+            storeContainer.innerHTML = "";
+
+            if(cards.length === 0) {
+                container.innerHTML = "<p style='color:#9ca3af; text-align:center; grid-column:1/-1;'>কোনো পোস্ট পাওয়া যায়নি। '+' চিহ্নে চাপ দিয়ে পোস্ট যোগ করুন।</p>";
+                return;
+            }
+
+            cards.forEach(card => {
+                const waLink = `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent('হ্যালো! আমি ' + card.title + ' সম্পর্কে বিস্তারিত জানতে চাই।')}`;
+                const detailLink = card.link && card.link.trim() !== '' ? card.link : waLink;
+
+                const cardHTML = `
+                    <div class="card" id="card-${card.id}">
+                        <button class="delete-btn" style="display:${isAdminLoggedIn ? 'flex' : 'none'};" onclick="deleteCard(${card.id})" title="মুছে ফেলুন">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <div class="card-img-wrapper">
+                            <img src="${card.img}" class="${card.fitStyle || 'img-fit-auto'}" alt="${card.title}" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">
+                                ${card.title}
+                                <i class="fa-solid fa-pen edit-pencil" style="display:${isAdminLoggedIn ? 'inline-block' : 'none'};" onclick="openEditModal(${card.id})" title="এডিট করুন"></i>
+                            </div>
+                            <div class="card-price">${card.price || 'ফ্রি'}</div>
+                            <div class="btn-group">
+                                <a href="${detailLink}" target="_blank" class="btn">বিস্তারিত দেখুন / ভর্তি হন</a>
+                                <a href="${waLink}" target="_blank" class="btn btn-wa" title="WhatsApp-এ যোগাযোগ করুন">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+                coursesContainer.innerHTML += cardHTML;
+                storeContainer.innerHTML += cardHTML;
+            });
+        }
+
+        /* Admin Authentication */
+        function handleAdminButtonClick() {
+            if (isAdminLoggedIn) {
+                openAddModal();
+            } else {
+                document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('passwordModal').style.display = 'flex';
+            }
+        }
+
+        function verifyAdminPassword() {
+            const inputPass = document.getElementById('adminPasswordInput').value;
+            if (inputPass === SECRET_PASS) {
+                isAdminLoggedIn = true;
+                closeModal('passwordModal');
+                
+                // Update Admin Button UI
+                const adminBtn = document.getElementById('adminToggleBtn');
+                adminBtn.classList.add('active');
+                document.getElementById('adminBtnText').innerText = "অ্যাক্টিভ";
+                adminBtn.querySelector('i').className = "fa-solid fa-unlock";
+
+                // Show Edit Pencils & Controls
+                document.getElementById('editTitleBtn').style.display = 'inline-block';
+                document.getElementById('editHeroBtn').style.display = 'inline-block';
+
+                loadCards(); // Reload cards to show admin controls
+            } else {
+                alert("ভুল পাসওয়ার্ড! অনুগ্রহ করে সঠিক এডমিন পাসওয়ার্ড প্রদান করুন।");
+            }
+        }
+
+        /* Modals Control */
+        function openAddModal() {
+            if (!isAdminLoggedIn) {
+                handleAdminButtonClick();
+                return;
+            }
+            editingCardId = null;
+            document.getElementById('postModalTitle').innerText = "নতুন কোর্স/বিজ্ঞাপন যোগ করুন";
+            document.getElementById('imgUrl').value = '';
+            document.getElementById('itemImageFile').value = '';
+            document.getElementById('itemTitle').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemLink').value = '';
+            document.getElementById('imgFitStyle').value = 'img-fit-auto';
+            document.getElementById('postModal').style.display = 'flex';
+        }
+
+        function openEditModal(id) {
+            const cards = getSavedCards();
+            const card = cards.find(c => c.id === id);
+            if (!card) return;
+
+            editingCardId = id;
+            document.getElementById('postModalTitle').innerText = "পোস্ট বা ছবি এডিট করুন";
+            document.getElementById('imgUrl').value = card.img;
+            document.getElementById('itemTitle').value = card.title;
+            document.getElementById('itemPrice').value = card.price;
+            document.getElementById('itemLink').value = card.link || '';
+            document.getElementById('imgFitStyle').value = card.fitStyle || 'img-fit-auto';
+            document.getElementById('postModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        /* Create & Save Post */
+        function savePost() {
+            const urlInput = document.getElementById('imgUrl').value.trim();
+            const fileInput = document.getElementById('itemImageFile').files[0];
+            const title = document.getElementById('itemTitle').value.trim();
+            const price = document.getElementById('itemPrice').value.trim();
+            const link = document.getElementById('itemLink').value.trim();
+            const fitStyle = document.getElementById('imgFitStyle').value;
+
+            if (!title) {
+                alert("অনুগ্রহ করে একটি শিরোনাম প্রদান করুন!");
+                return;
+            }
+
+            if (fileInput) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    processSavePost(e.target.result, title, price, link, fitStyle);
+                };
+                reader.readAsDataURL(fileInput);
+            } else if (urlInput) {
+                processSavePost(urlInput, title, price, link, fitStyle);
+            } else if (editingCardId) {
+                const cards = getSavedCards();
+                const card = cards.find(c => c.id === editingCardId);
+                processSavePost(card ? card.img : '', title, price, link, fitStyle);
+            } else {
+                alert("অনুগ্রহ করে একটি ছবি সিলেক্ট করুন অথবা অনলাইন লিংক দিন!");
+            }
+        }
+
+        function processSavePost(imageSrc, title, price, link, fitStyle) {
+            let cards = getSavedCards();
+
+            if (editingCardId) {
+                cards = cards.map(c => {
+                    if (c.id === editingCardId) {
+                        return { ...c, title, price, img: imageSrc || c.img, link, fitStyle };
+                    }
+                    return c;
+                });
+            } else {
+                const newCard = {
+                    id: Date.now(),
+                    title,
+                    price,
+                    img: imageSrc,
+                    link,
+                    fitStyle
+                };
+                cards.unshift(newCard);
+            }
+
+            saveCardsToStorage(cards);
+            loadCards();
+            closeModal('postModal');
+        }
+
+        /* Delete Post */
+        function deleteCard(id) {
+            if (confirm("আপনি কি নিশ্চিত যে এই পোস্টটি মুছে ফেলতে চান?")) {
+                let cards = getSavedCards();
+                cards = cards.filter(c => c.id !== id);
+                saveCardsToStorage(cards);
+                loadCards();
+            }
+        }
+
+        /* Dynamic Title Edits */
+        function editSiteTitle() {
+            const currentTitle = document.getElementById('siteTitle').innerText;
+            const newTitle = prompt("ওয়েবসাইটের নাম পরিবর্তন করুন:", currentTitle);
+            if (newTitle && newTitle.trim() !== "") {
+                document.getElementById('siteTitle').innerText = newTitle;
+                localStorage.setItem('iqra_site_title', newTitle);
+            }
+        }
+
+        function editHeroHeader() {
+            const currentHero = document.getElementById('heroHeader').innerText;
+            const newHero = prompt("হেডার টাইটেল পরিবর্তন করুন:", currentHero);
+            if (newHero && newHero.trim() !== "") {
+                document.getElementById('heroHeader').innerText = newHero;
+                localStorage.setItem('iqra_hero_title', newHero);
+            }
+        }
+
+        function loadHeaderData() {
+            const savedTitle = localStorage.getItem('iqra_site_title');
+            const savedHero = localStorage.getItem('iqra_hero_title');
+            if (savedTitle) document.getElementById('siteTitle').innerText = savedTitle;
+            if (savedHero) document.getElementById('heroHeader').innerText = savedHero;
+        }
+
+        /* Page Tab Switching */
+        function switchPage(pageId, navElement) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            navElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+```
